@@ -9,10 +9,10 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-    private final String SECRET_KEY = "mysecretkey123"; // change to strong secret
+    private static final String SECRET_KEY = "mysecretkey123"; // change to strong secret
 
     // Generate token
-    public String generateToken(String username) {
+    public static String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())

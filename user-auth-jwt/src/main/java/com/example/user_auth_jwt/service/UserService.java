@@ -9,14 +9,18 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
+    // Register new user
     public User registerUser(String username, String password) {
         User user = new User(username, passwordEncoder.encode(password), "ROLE_USER");
         return userRepository.save(user);
@@ -29,14 +33,16 @@ public class UserService {
                 .orElse(false);
     }
 
+    // Login and return JWT
     public String login(String username, String password) {
         boolean authenticated = authenticate(username, password);
         if (!authenticated) {
             throw new RuntimeException("Invalid username or password");
         }
-        return JwtUtil.generateToken(username);
+        return jwtUtil.generateToken(username);
     }
 
+    // Check if username exists
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
     }

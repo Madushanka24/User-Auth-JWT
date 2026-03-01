@@ -1,3 +1,4 @@
+
 package com.example.user_auth_jwt.service;
 
 import com.example.user_auth_jwt.model.User;
@@ -14,11 +15,8 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+
     public User registerUser(String username, String password) {
-        // Check if username already exists
-        if(userRepository.findByUsername(username).isPresent()) {
-            throw new RuntimeException("Username already taken");
-        }
 
         // Encode password before saving
         User user = new User(username, passwordEncoder.encode(password), "ROLE_USER");
